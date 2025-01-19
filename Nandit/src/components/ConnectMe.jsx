@@ -8,12 +8,12 @@ import quickAccess from "../assets/quicklinks.js";
 const ConnectMe = () => {
   return (
     <div className="sm:mx-12 mx-2">
-      <motion.div variants={textVariant()}>
+      <div>
         <h2 className={styles.sectionHeadText}>Connect Me</h2>
-      </motion.div>
-      <motion.p variants={fadeIn("", "", 0.1, 1)} className="mt-4 text-secondary text-[17px] max-w-3xl leading-[30px]">
+      </div>
+      <p variants={fadeIn("", "", 0.1, 1)} className="mt-4 text-secondary text-[17px] max-w-3xl leading-[30px]">
         I'm a skilled software developer and Full Stack Developer. Here are some of my profile links to connect with me and explore platforms where I showcase my coding skills.
-      </motion.p>
+      </p>
       <div className="mt-20 grid sm:grid-cols-4 grid-cols-2 gap-10">
         {
           quickAccess.map((item) => (
@@ -28,4 +28,4 @@ const ConnectMe = () => {
   );
 };
 
-export default SectionWraper(ConnectMe, "");
+export default SectionWraper(ConnectMe, "sociallinks");
