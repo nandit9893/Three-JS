@@ -16,6 +16,6 @@ const Tech = () => {
       }
     </div>
   );
-};
+}
 
 export default SectionWraper(Tech, "");
