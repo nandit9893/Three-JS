@@ -8,6 +8,7 @@ import { slideIn } from "../utils/motion";
 
 const Contact = () => {
   const formRef = useRef();
+  const [messageSent, setMessageSent] = useState(false);
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -24,18 +25,22 @@ const Contact = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    if(form.name === "" || form.email === "" || form.message === "") {
+      return;
+    } 
     setLoading(true);
     emailjs.send(
-      "service_rc75kzv", "template_fxosl5i", {
+      import.meta.env.VITE_FIRST_SECURE_KEY, import.meta.env.VITE_SECOND_SECURE_KEY, {
         from_name: form.name,
         to_name: "Nandit Sharma",
         from_email: form.email,
         to_email: "nanditsharma063@gmail.com",
         message: form.message,
-      }, "2zHUVXhF9_FOEJMm6"
+      }, import.meta.env.VITE_THIRD_SECURE_KEY
     ).then(() => {
       setLoading(false);
       alert("Thank you, I will get back to you soon");
+      setMessageSent(true);
       setForm({
         name: "",
         email: "",
@@ -43,9 +48,8 @@ const Contact = () => {
       });
     }, (error) => {
       setLoading(false);
-      console.log(error);
-      alert("Something went wrong");
     });
+    setMessageSent(false);
   };
 
   return (
@@ -56,17 +60,20 @@ const Contact = () => {
         <form className="mt-12 flex flex-col gap-8" onSubmit={handleSubmit} ref={formRef}>
           <label htmlFor="" className="flex flex-col">
             <span className="text-white font-medium mb-4">Your Name</span>
-            <input type="text" name="name" value={form.name} onChange={handleChange} placeholder="What's your name?" className="bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg outline-none border-none font-medium" />
+            <input required type="text" name="name" value={form.name} onChange={handleChange} placeholder="What's your name?" className="bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg outline-none border-none font-medium" />
           </label>
           <label htmlFor="" className="flex flex-col">
             <span className="text-white font-medium mb-4">Your Email</span>
-            <input type="email" name="email" value={form.email} onChange={handleChange} placeholder="What's your email?" className="bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg outline-none border-none font-medium" />
+            <input required type="email" name="email" value={form.email} onChange={handleChange} placeholder="What's your email?" className="bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg outline-none border-none font-medium" />
           </label>
           <label htmlFor="" className="flex flex-col">
             <span className="text-white font-medium mb-4">Your Message</span>
-            <textarea rows="7" name="message" value={form.message} onChange={handleChange} placeholder="What do you want to say?" className="bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg outline-none border-none font-medium" />
+            <textarea required rows="7" name="message" value={form.message} onChange={handleChange} placeholder="What do you want to say?" className="bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg outline-none border-none font-medium" />
           </label>
-          <button className="bg-tertiary py-3 px-8 outline-none w-fit text-white font-bold shadow-md shadow-primary rounded-xl" type="submit">{loading ? "Sending..." : "Send"}</button>
+          <div className="flex justify-between items-center">
+            <button className="bg-tertiary py-3 px-8 outline-none w-fit text-white font-bold shadow-md shadow-primary rounded-xl" type="submit">{loading ? "Sending..." : "Send"}</button>
+            {messageSent ? <p className="bg-tertiary py-3 px-8 outline-none w-fit text-white font-bold shadow-md shadow-primary rounded-xl">Thank you I will get you soon!!</p> : null}
+          </div>
         </form>
       </motion.div>
       <motion.div className="xl:flex-1  xl:h-auto md:h-[550px] h-[350px]" variants={slideIn("right", "tween", 0.2, 1)}>
